@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -17,7 +18,10 @@ public class Dialogue : MonoBehaviour
     public RawImage characterLeft;
     public RawImage characterRight;
 
+    Dictionary<string, Action> actionMap = new();
+
     bool typing = false;
+    Action nextAction = null;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -35,6 +39,11 @@ public class Dialogue : MonoBehaviour
             //print(fields.ToString());
             data.Add(fields);
         }
+
+        nextAction = GoNext;
+
+        actionMap.Add("", GoNext);
+        actionMap.Add("fork", ForkInRoade);
     }
 
     // Update is called once per frame
@@ -43,7 +52,7 @@ public class Dialogue : MonoBehaviour
         //print(!typing + ":"+ currentMessage);
         //print(typing);
         //if (!typing) showMessage(currentMessage + 1);
-        if(CheckInput()) showMessage(currentMessage + 1);
+        if(CheckInput() && nextAction != null) nextAction();
     }
 
     void showMessage(int message) {
@@ -68,6 +77,14 @@ public class Dialogue : MonoBehaviour
         }
         yield return new WaitForSeconds(0.5f);
         typing = false;
+
+        DoneWriting();
+    }
+
+    void DoneWriting()
+    {
+        string command = data[currentMessage][3].ToLower();
+        actionMap.TryGetValue(command, out nextAction);
     }
 
     private bool CheckInput()
@@ -85,5 +102,17 @@ public class Dialogue : MonoBehaviour
         }
 
         return false;
+    }
+
+    void GoNext()
+    {
+        showMessage(currentMessage + 1);
+    }
+
+    void ForkInRoade()
+    {
+        print("OH NO!!");
+        print(data[currentMessage][4]);
+        currentMessage = int.Parse(data[currentMessage][4]);
     }
 }
