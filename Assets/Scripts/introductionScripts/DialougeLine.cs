@@ -17,7 +17,7 @@ namespace DialougeSystem
         {
             // textHolder = GetComponent<TMP_Text>(); // Get the TMP_Text component
 
-            Debug.Log(textHolder);
+            // Debug.Log(textHolder);
 
             StartCoroutine(WriteText(input, textHolder, tmp_Font)); // Start the coroutine to write text
 

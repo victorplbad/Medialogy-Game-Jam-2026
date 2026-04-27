@@ -231,6 +231,7 @@ GameObject:
   m_Component:
   - component: {fileID: 60588211}
   - component: {fileID: 60588210}
+  - component: {fileID: 60588212}
   m_Layer: 0
   m_Name: DialougeManager
   m_TagString: Untagged
@@ -250,6 +251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9812dfd7fa7e8824e9965042e734d361, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialougeSystem.DialougeLine
+  textHolder: {fileID: 562514828}
   input: testsetsetsetsetetsetstesting
   tmp_Font: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
 --- !u!4 &60588211
@@ -267,6 +269,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &60588212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 60588209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7ae55c224b605d4f863c279021bdf3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CSVRuntimeReader
 --- !u!1 &562514826
 GameObject:
   m_ObjectHideFlags: 0
