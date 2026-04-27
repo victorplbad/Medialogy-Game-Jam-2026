@@ -1,9 +1,9 @@
 TextID(Has to increment),Text line,CharacterID(s),SpecialFunction,GOTO,Choice2,GOTO,Choice3,GOTO
 1,Du er på arbjede.,,,,,,,
-2,"du kunne virkelig godt tænke dig, at det ikke var tilfældet.","[1,2]",Gå hjem,3,Arbejd videre,4,Go to sleep.,5
-3,Du er fyret,"[_,_]",BadEnd,,,,,
-4,Du missede bussen så du måtte ringe efter en taxa derfor har du ikke tjent løn i dag,"[_,_]",GoodEnd,,,,,
-5,"Chefen så dig, og det viste sig at han er morderen du leder efter. nu er du død.","[_,3]",WorstEnd,,,,,
+2,du kunne virkelig godt tænke dig; at det ikke var tilfældet.,[1:2],Gå hjem,3,Arbejd videre,4,Go to sleep.,5
+3,Du er fyret,[1:],BadEnd,,,,,
+4,Du missede bussen så du måtte ringe efter en taxa derfor har du ikke tjent løn i dag,[:2],GoodEnd,,,,,
+5,"Chefen så dig, og det viste sig at han er morderen du leder efter. nu er du død.",[:3],WorstEnd,,,,,
 6,,,,,,,,
 7,,,,,,,,
 8,,,,,,,,
