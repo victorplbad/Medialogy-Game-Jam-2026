@@ -17,11 +17,20 @@ public class Dialogue : MonoBehaviour
     public TextMeshProUGUI textBox;
     public RawImage characterLeft;
     public RawImage characterRight;
+    
+    public Transform buttonPanel;
+    public GameObject prefab;
 
     Dictionary<string, Action> actionMap = new();
 
-    bool typing = false;
+    bool awaitInput = false;
     Action nextAction = null;
+
+    readonly int Col_Text = 1;
+    readonly int Col_DisplayCharacters = 2;
+    readonly int Col_Background = 3;
+    readonly int Col_Functions = 4;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -42,7 +51,6 @@ public class Dialogue : MonoBehaviour
 
         nextAction = GoNext;
 
-        actionMap.Add("", GoNext);
         actionMap.Add("fork", ForkInRoade);
     }
 
@@ -56,13 +64,13 @@ public class Dialogue : MonoBehaviour
     }
 
     void showMessage(int message) {
-        if (typing) return;
+        if (awaitInput) return;
         if (currentMessage == message) return;
 
-        typing = true;
+        awaitInput = true;
 
         currentMessage = message;
-        StartCoroutine(WriteText(data[currentMessage][1], textBox, null));
+        StartCoroutine(WriteText(data[currentMessage][Col_Text], textBox, null));
     }
 
     public IEnumerator WriteText(string input, TMP_Text textHolder, TMP_FontAsset tMP_Font)
@@ -76,20 +84,21 @@ public class Dialogue : MonoBehaviour
             yield return new WaitForSeconds(0.025f);
         }
         yield return new WaitForSeconds(0.5f);
-        typing = false;
+        awaitInput = false;
 
         DoneWriting();
     }
 
     void DoneWriting()
     {
-        string command = data[currentMessage][3].ToLower();
-        actionMap.TryGetValue(command, out nextAction);
+        string command = data[currentMessage][Col_Functions].ToLower();
+        if (actionMap.TryGetValue(command, out nextAction));
+        else nextAction = GoNext;
     }
 
     private bool CheckInput()
     {
-        if (typing) return false;
+        if (awaitInput) return false;
 
         if (Mouse.current != null && Mouse.current.leftButton.isPressed)
         {
@@ -111,8 +120,32 @@ public class Dialogue : MonoBehaviour
 
     void ForkInRoade()
     {
-        print("OH NO!!");
-        print(data[currentMessage][4]);
-        currentMessage = int.Parse(data[currentMessage][4]);
+        awaitInput = true;
+        for (int i = buttonPanel.childCount - 1; i >= 0; i--)
+        {
+            Destroy(buttonPanel.GetChild(i).gameObject);
+        }
+
+        string[] row = data[currentMessage];
+        int col = Col_Functions + 1;
+        while (col + 1 <= row.Length && row[col].Length > 0 && row[col + 1].Length > 0)
+        {
+            GameObject GO = Instantiate(prefab, buttonPanel);
+
+            Button button = GO.GetComponent<Button>();
+            TextMeshProUGUI tmPro = GO.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+
+            tmPro.text = row[col];
+            int veryVeryLocalNumberForAReason = col + 1;
+            button.onClick.AddListener(() => { ButtonListener(row[veryVeryLocalNumberForAReason]); });
+
+            col += 2;
+        }
+    }
+
+    public void ButtonListener(string a)
+    {
+        awaitInput = false;
+        showMessage(int.Parse(a));
     }
 }
