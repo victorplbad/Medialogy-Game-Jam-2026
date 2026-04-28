@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
-public class Dialogue : MonoBehaviour
+public class DialogueManager : MonoBehaviour
 {
     public TextAsset CSV;
     private List<string[]> data = new();
@@ -207,7 +207,7 @@ public class Dialogue : MonoBehaviour
     void End()
     {
         Permanence.ending = data[currentMessage][Col_Functions + 1];
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("Ending");
     }
 }
 

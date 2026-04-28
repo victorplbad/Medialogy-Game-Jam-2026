@@ -1,9 +1,9 @@
 TextID(Has to increment),Text line,CharacterID(s),BaggroundID,SpecialFunction,Choice1,GOTO,Choice2,GOTO,Choice3,GOTO
 1,Du er der hjemme og magter ikke arbejde,[1:],home,,,,,,,
 2,du kunne virkelig godt tænke dig; at det ikke var tilfældet.,[1:2],home,Fork,gå hjem,3,Arbejd videre,4,sove på bordet,5
-3,Du er fyret,[1:],,End,Good end,,,,,
+3,Du er fyret,[1:],,End,Good ending,,,,,
 4,Du missede bussen så du måtte ringe efter en taxa derfor har du ikke tjent løn i dag,[:2],,Fork,arbejde til du dør,4,gå hjem,5,,
-5,Chefen så dig; og det viste sig at han er morderen du leder efter. nu er du død.,[:3],,End,Bad end,,,,,
+5,Chefen så dig; og blev sur over at du ikke arbejder mere. nu er du død.,[:3],,End,Bad end,,,,,
 6,,,,,,,,,,
 7,,,,,,,,,,
 8,,,,,,,,,,
