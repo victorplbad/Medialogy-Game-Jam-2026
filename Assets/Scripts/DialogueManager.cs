@@ -1,10 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
@@ -17,8 +18,8 @@ public class Dialogue : MonoBehaviour
 
     public TextMeshProUGUI textBox;
     public Image background;
-    public Image characterLeft;
-    public Image characterRight;
+    public CharacterSlide characterLeft;
+    public CharacterSlide characterRight;
     
     public Transform buttonPanel;
     public GameObject prefab;
@@ -28,7 +29,6 @@ public class Dialogue : MonoBehaviour
     //Dictionary<string, Image> character = new();
     public string[] backgroundNames;
     public Sprite[] backgroundImages;
-    public Sprite[] characterImages;
 
     bool awaitInput = false;
     Action nextAction = null;
@@ -61,6 +61,7 @@ public class Dialogue : MonoBehaviour
 
         nextAction = GoNext;
         actionMap.Add("fork", ForkInRoade);
+        actionMap.Add("end", End);
 
 
     }
@@ -104,19 +105,15 @@ public class Dialogue : MonoBehaviour
         input = input.Substring(1, input.Length - 2);
         var IDs = input.Split(":");
 
-        if (IDs[0].Length == 0) characterLeft.gameObject.SetActive(false);
+        if (IDs[0].Length == 0) characterLeft.SetCharacter();
         else
         {
-            print(IDs[0]);
-            characterLeft.gameObject.SetActive(true);
-            characterLeft.sprite = characterImages[int.Parse(IDs[0])];
+            characterLeft.SetCharacter(int.Parse(IDs[0]));
         }
-        if (IDs[1].Length == 0) characterRight.gameObject.SetActive(false);
+        if (IDs[1].Length == 0) characterRight.SetCharacter();
         else
         {
-            print(IDs[1]);
-            characterRight.gameObject.SetActive(true);
-            characterRight.sprite = characterImages[int.Parse(IDs[1])];
+            characterRight.SetCharacter(int.Parse(IDs[1]));
         }
     }
 
@@ -206,4 +203,15 @@ public class Dialogue : MonoBehaviour
         showMessage(int.Parse(a));
         buttonPanel.gameObject.SetActive(false);
     }
+
+    void End()
+    {
+        Permanence.ending = data[currentMessage][Col_Functions + 1];
+        SceneManager.LoadScene("SampleScene");
+    }
+}
+
+public static class Permanence
+{
+    public static string ending;
 }
