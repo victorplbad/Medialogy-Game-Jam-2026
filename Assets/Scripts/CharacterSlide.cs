@@ -10,6 +10,7 @@ public class CharacterSlide : MonoBehaviour
     private Image image;
     public int currentCharacter;
     public Sprite[] characterImages;
+    public Sprite missingImage;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -43,7 +44,9 @@ public class CharacterSlide : MonoBehaviour
         else
         {
             gameObject.SetActive(true);
-            image.sprite = characterImages[ID];
+            
+            if (characterImages[ID] != null) image.sprite = characterImages[ID];
+            else image.sprite = missingImage;
             if (ID != currentCharacter) Animate();
         }
         currentCharacter = ID;
