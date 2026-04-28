@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -15,13 +16,19 @@ public class Dialogue : MonoBehaviour
     private int currentMessage = 0;
 
     public TextMeshProUGUI textBox;
-    public RawImage characterLeft;
-    public RawImage characterRight;
+    public Image background;
+    public Image characterLeft;
+    public Image characterRight;
     
     public Transform buttonPanel;
     public GameObject prefab;
 
     Dictionary<string, Action> actionMap = new();
+    //Dictionary<string, Image> backgrounds = new();
+    //Dictionary<string, Image> character = new();
+    public string[] backgroundNames;
+    public Sprite[] backgroundImages;
+    public Sprite[] characterImages;
 
     bool awaitInput = false;
     Action nextAction = null;
@@ -30,6 +37,9 @@ public class Dialogue : MonoBehaviour
     readonly int Col_DisplayCharacters = 2;
     readonly int Col_Background = 3;
     readonly int Col_Functions = 4;
+
+    //DirectoryInfo backgroundPath = new("/Assets/Images/Backgrounds/");
+    //DirectoryInfo characterPath = new("/Assets/Images/Backgrounds/");
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -50,8 +60,9 @@ public class Dialogue : MonoBehaviour
         }
 
         nextAction = GoNext;
-
         actionMap.Add("fork", ForkInRoade);
+
+
     }
 
     // Update is called once per frame
@@ -66,11 +77,56 @@ public class Dialogue : MonoBehaviour
     void showMessage(int message) {
         if (awaitInput) return;
         if (currentMessage == message) return;
+        currentMessage = message;
 
         awaitInput = true;
 
-        currentMessage = message;
+        var img = GetImage(data[currentMessage][Col_Background]);
+        if (img != null) { background.sprite = img; }
+        else { background.sprite = null; }
+
+        SetCharacterImages(data[currentMessage][Col_DisplayCharacters]);
+
         StartCoroutine(WriteText(data[currentMessage][Col_Text], textBox, null));
+    }
+
+    void SetCharacterImages(string input)
+    {
+        if (input == null) return;
+        if (input.Length == 0)
+        {
+            characterLeft.gameObject.SetActive(false);
+            characterRight.gameObject.SetActive(false);
+            return;
+        }
+        if (!input.Contains(":")) return;
+
+        input = input.Substring(1, input.Length - 2);
+        var IDs = input.Split(":");
+
+        if (IDs[0].Length == 0) characterLeft.gameObject.SetActive(false);
+        else
+        {
+            print(IDs[0]);
+            characterLeft.gameObject.SetActive(true);
+            characterLeft.sprite = characterImages[int.Parse(IDs[0])];
+        }
+        if (IDs[1].Length == 0) characterRight.gameObject.SetActive(false);
+        else
+        {
+            print(IDs[1]);
+            characterRight.gameObject.SetActive(true);
+            characterRight.sprite = characterImages[int.Parse(IDs[1])];
+        }
+    }
+
+    Sprite GetImage(string name)
+    {
+        for (int i = 0; i < backgroundNames.Length; i++)
+        {
+            if (backgroundNames[i] == name) return backgroundImages[i];
+        }
+        return null;
     }
 
     public IEnumerator WriteText(string input, TMP_Text textHolder, TMP_FontAsset tMP_Font)
@@ -81,9 +137,9 @@ public class Dialogue : MonoBehaviour
         for (int i = 0; i < input.Length; i++)
         {
             textHolder.text += input[i];
-            yield return new WaitForSeconds(0.025f);
+            yield return new WaitForSeconds(0.015f);
         }
-        yield return new WaitForSeconds(0.5f);
+        //yield return new WaitForSeconds(0.5f);
         awaitInput = false;
 
         DoneWriting();
@@ -126,6 +182,7 @@ public class Dialogue : MonoBehaviour
             Destroy(buttonPanel.GetChild(i).gameObject);
         }
 
+        buttonPanel.gameObject.SetActive(true);
         string[] row = data[currentMessage];
         int col = Col_Functions + 1;
         while (col + 1 <= row.Length && row[col].Length > 0 && row[col + 1].Length > 0)
@@ -147,5 +204,6 @@ public class Dialogue : MonoBehaviour
     {
         awaitInput = false;
         showMessage(int.Parse(a));
+        buttonPanel.gameObject.SetActive(false);
     }
 }
