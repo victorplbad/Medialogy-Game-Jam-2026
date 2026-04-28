@@ -59,11 +59,10 @@ public class DialogueManager : MonoBehaviour
             data.Add(fields);
         }
 
-        nextAction = GoNext;
         actionMap.Add("fork", ForkInRoade);
         actionMap.Add("end", End);
 
-
+        showMessage(1);
     }
 
     // Update is called once per frame
