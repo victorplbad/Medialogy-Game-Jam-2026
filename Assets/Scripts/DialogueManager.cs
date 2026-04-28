@@ -1,9 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -32,7 +30,6 @@ public class DialogueManager : MonoBehaviour
     public Sprite[] backgroundImages;
 
     bool blockInput = false;
-    bool turboText = false;
     Action nextAction = null;
 
     readonly int Col_Name = 1;
@@ -87,8 +84,8 @@ public class DialogueManager : MonoBehaviour
         currentMessage = message;
 
         var img = backgroundImages[int.Parse(data[currentMessage][Col_Background])];
-        if (img != null) { background.sprite = img; }
-        else { background.sprite = null; }
+        if (img == null) background.sprite = backgroundImages[0];
+        else { background.sprite = img; }
 
         SetCharacterImages(data[currentMessage][Col_DisplayCharacters]);
 
@@ -126,7 +123,6 @@ public class DialogueManager : MonoBehaviour
     {
         if (tMP_Font != null) textHolder.font = tMP_Font;
         blockInput = true;
-        turboText = false;
 
         textHolder.text = ""; //nustil text f�rst 
         for (int i = 0; i < input.Length; i++)
@@ -207,8 +203,8 @@ public class DialogueManager : MonoBehaviour
 
     void End()
     {
-        var ending = data[currentMessage][Col_Functions + 1].ToLower();
-        print(ending);
+        var ending = data[currentMessage][Col_Functions + 1].Trim().ToLower();
+
         if(ending == "bad_ending") Permanence.EndingID = 1;
         if(ending == "happy_ending") Permanence.EndingID = 2;
         SceneManager.LoadScene("Ending");
