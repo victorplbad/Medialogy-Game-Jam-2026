@@ -1,6 +1,6 @@
 TextID(Has to increment),Speeker,Text line,CharacterID(s),BaggroundID,SpecialFunction,Choice1,GOTO,Choice2,GOTO,Choice3,GOTO
 1,Adam,"""Uhg..  another day; another case”",,1,,,,,,,
-2,Adam,“I need to get to the station; Sheriff Gordon is waiting for that report; ugh..”,,1,,,,,,,
+2,Adam,“I need to get to the station; Sheriff Gordon is waiting for that report; ugh..”,,1,end,bad_ending
 3,,\You take the bus to work\,[5:],2,,,,,,,
 4,Adam,“Why did I have to lose my car to gambling? I hate taking the bus!”,[5:],2,,,,,,,
 5,Adam,“Finally here; gonna head to the cafeteria”,,3,,,,,,,

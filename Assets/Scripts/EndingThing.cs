@@ -2,8 +2,10 @@ using UnityEngine;
 
 public class EndingThing : MonoBehaviour
 {
+    public int endingID;
+
     void Start()
     {
-        gameObject.SetActive(Permanence.ending.ToLower() == gameObject.name.ToLower());
+        gameObject.SetActive(endingID == Permanence.EndingID);
     }
 }

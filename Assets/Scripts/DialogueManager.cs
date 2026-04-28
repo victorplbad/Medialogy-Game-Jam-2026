@@ -128,7 +128,7 @@ public class DialogueManager : MonoBehaviour
         blockInput = true;
         turboText = false;
 
-        textHolder.text = ""; //nustil text først 
+        textHolder.text = ""; //nustil text fï¿½rst 
         for (int i = 0; i < input.Length; i++)
         {
             textHolder.text += input[i];
@@ -207,12 +207,15 @@ public class DialogueManager : MonoBehaviour
 
     void End()
     {
-        Permanence.ending = data[currentMessage][Col_Functions + 1];
+        var ending = data[currentMessage][Col_Functions + 1].ToLower();
+        print(ending);
+        if(ending == "bad_ending") Permanence.EndingID = 1;
+        if(ending == "happy_ending") Permanence.EndingID = 2;
         SceneManager.LoadScene("Ending");
     }
 }
 
 public static class Permanence
 {
-    public static string ending;
+    public static int EndingID;
 }
