@@ -137,7 +137,7 @@ public class CDialogueManager : MonoBehaviour
     }
 
     void GoNext()           //Default
-    {
+    {                       //Advance to next row
         ShowMessage(currentMessage + 1);
     }
 
