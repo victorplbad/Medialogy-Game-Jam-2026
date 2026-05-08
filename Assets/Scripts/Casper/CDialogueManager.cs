@@ -101,7 +101,7 @@ public class CDialogueManager : MonoBehaviour
             characterRight.gameObject.SetActive(false);
             return;
         }
-        if (!input.Contains(":")) return;
+        if (!input.Contains(":") && !input.StartsWith("[") && !input.EndsWith("]")) return; //Bad input
 
         input = input.Substring(1, input.Length - 2);   //Remove brackets(why did i decide to have those
         var IDs = input.Split(":");                     //Split left right
