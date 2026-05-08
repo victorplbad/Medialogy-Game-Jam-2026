@@ -136,17 +136,17 @@ public class CDialogueManager : MonoBehaviour
         else nextAction = GoNext;
     }
 
-    void GoNext()
+    void GoNext()           //Default
     {
         ShowMessage(currentMessage + 1);
     }
 
-    void GoJump()
+    void GoJump()           //Jump
     {
         ShowMessage(int.Parse(data[currentMessage][Col_Functions + 1]));
     }
 
-    void ForkInRoade()
+    void ForkInRoade()      //Fork
     {
         blockInput = true;
         for (int i = buttonPanel.childCount - 1; i >= 0; i--)
@@ -172,19 +172,19 @@ public class CDialogueManager : MonoBehaviour
         }
     }
 
-    public void ButtonListener(string a)
-    {
-        blockInput = false;
-        ShowMessage(int.Parse(a));
-        buttonPanel.gameObject.SetActive(false);
-    }
-
-    void End()
+    void End()              //End
     {
         var ending = data[currentMessage][Col_Functions + 1].Trim().ToLower();
 
         if (ending == "bad_ending") Permanence.EndingID = 1;
         if (ending == "happy_ending") Permanence.EndingID = 2;
         SceneManager.LoadScene("Ending");
+    }
+
+    public void ButtonListener(string a)
+    {
+        blockInput = false;
+        ShowMessage(int.Parse(a));
+        buttonPanel.gameObject.SetActive(false);
     }
 }
