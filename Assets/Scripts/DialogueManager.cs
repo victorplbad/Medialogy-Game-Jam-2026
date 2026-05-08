@@ -118,16 +118,21 @@ public class DialogueManager : MonoBehaviour
             characterRight.SetCharacter(int.Parse(IDs[1]));
         }
     }
-
+    bool finishNow;
     public IEnumerator WriteText(string input, TMP_Text textHolder, TMP_FontAsset tMP_Font)
     {
         if (tMP_Font != null) textHolder.font = tMP_Font;
         blockInput = true;
+        finishNow = false;
 
         textHolder.text = ""; //nustil text f�rst 
         for (int i = 0; i < input.Length; i++)
         {
-            textHolder.text += input[i];
+            if(finishNow) {
+                textHolder.text = input;
+                break;
+            }
+            else textHolder.text += input[i];
             yield return new WaitForSeconds(0.015f);
         }
         //yield return new WaitForSeconds(0.5f);
@@ -141,6 +146,10 @@ public class DialogueManager : MonoBehaviour
         string command = data[currentMessage][Col_Functions].ToLower();
         if (actionMap.TryGetValue(command, out nextAction));
         else nextAction = GoNext;
+    }
+    public void DoubleTab()
+    {
+        finishNow = true;
     }
 
     private bool CheckInput()
