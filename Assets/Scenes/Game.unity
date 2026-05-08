@@ -1185,6 +1185,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1785930125}
   - component: {fileID: 1785930126}
+  - component: {fileID: 1785930127}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -1234,6 +1235,21 @@ MonoBehaviour:
   - {fileID: -3965450005501503821, guid: 59c04af04fe2f4a45a354d11210bd4e6, type: 3}
   - {fileID: -10912160, guid: f7278497adb6db9469d830484e246996, type: 3}
   - {fileID: -1222084528289432348, guid: cbe61ce056a8fa24886cf9f902a85a0f, type: 3}
+--- !u!114 &1785930127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1785930124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c25f3d498c458db4da4a9fc6a12f9c54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gestures_DoubleTap
+  square: {fileID: 0}
+  maxTapDelay: 0.3
+  dialogueManager: {fileID: 1785930126}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
