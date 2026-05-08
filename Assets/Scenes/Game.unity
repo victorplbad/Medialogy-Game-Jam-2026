@@ -1185,6 +1185,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1785930125}
   - component: {fileID: 1785930126}
+  - component: {fileID: 1785930128}
+  - component: {fileID: 1785930127}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -1214,7 +1216,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1785930124}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e7ae55c224b605d4f863c279021bdf3a, type: 3}
   m_Name: 
@@ -1227,6 +1229,46 @@ MonoBehaviour:
   characterRight: {fileID: 372876705}
   buttonPanel: {fileID: 352923114}
   prefab: {fileID: 8895835486428597374, guid: f1729f42e4179034ebf35799ee6696b9, type: 3}
+  backgroundImages:
+  - {fileID: -7361014072936325780, guid: bd0eaba784a5b0b488554ee9c63a2d7c, type: 3}
+  - {fileID: 21300000, guid: 4dcc9bddbd6a7a045acd535cb3266f2b, type: 3}
+  - {fileID: -1813314022321868696, guid: 4801b668ca0a61f42b3cfffce55b46c1, type: 3}
+  - {fileID: -3965450005501503821, guid: 59c04af04fe2f4a45a354d11210bd4e6, type: 3}
+  - {fileID: -10912160, guid: f7278497adb6db9469d830484e246996, type: 3}
+  - {fileID: -1222084528289432348, guid: cbe61ce056a8fa24886cf9f902a85a0f, type: 3}
+--- !u!114 &1785930127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1785930124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdef4d71403a3d84b895b68051453c91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CInputManager
+--- !u!114 &1785930128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1785930124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cafd2b1bae8603743991bd4afc42e7c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CDialogueManager
+  CSV: {fileID: 4900000, guid: a4b9b1c55e53b5a4d9031b112d5d074b, type: 3}
+  textName: {fileID: 1751150572}
+  textBox: {fileID: 1581469044}
+  background: {fileID: 1117689032}
+  characterLeft: {fileID: 1097765923}
+  characterRight: {fileID: 372876705}
+  buttonPanel: {fileID: 352923114}
+  prefab: {fileID: 8895835486428597374, guid: f1729f42e4179034ebf35799ee6696b9, type: 3}
+  letterDelay: 0.015
   backgroundImages:
   - {fileID: -7361014072936325780, guid: bd0eaba784a5b0b488554ee9c63a2d7c, type: 3}
   - {fileID: 21300000, guid: 4dcc9bddbd6a7a045acd535cb3266f2b, type: 3}
