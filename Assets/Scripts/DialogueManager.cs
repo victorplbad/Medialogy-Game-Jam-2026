@@ -38,6 +38,19 @@ public class DialogueManager : MonoBehaviour
     readonly int Col_Background = 4;
     readonly int Col_Functions = 5;
 
+    // New Auto play mode
+    [Header("Auto Play")]
+    [SerializeField] private bool autoMode = false;
+    [SerializeField] private float autoDelay = 2.5;
+    private Coroutine autoCoroutine;
+
+    // Long press on-screen-gesture for autoPlay
+    private float pressTimer = 0f;
+    private bool longPressedTriggered = false;
+
+    [SerializeField] private float LongPressTime = 0.5;
+
+
     //DirectoryInfo backgroundPath = new("/Assets/Images/Backgrounds/");
     //DirectoryInfo characterPath = new("/Assets/Images/Backgrounds/");
 
@@ -69,14 +82,92 @@ public class DialogueManager : MonoBehaviour
     bool lClick;
     // Update is called once per frame
     void Update()
+{
+    // NEW: KEYBOARD INPUT, Q toggles auto mode
+
+    if (Keyboard.current != null &&
+        Keyboard.current.qKey.wasPressedThisFrame)
     {
-        //print(!typing + ":"+ currentMessage);
-        //print(typing);
-        //if (!typing) showMessage(currentMessage + 1);
-        bool click = CheckInput();
-        if(!blockInput && !lClick && click && nextAction != null) nextAction();
-        lClick = click;
+        ToggleAutoMode();
     }
+
+    // NEW: POINTER INPUT (mouse + touch)
+    // Left click = next dialogue, Long press = toggle auto mode
+
+    bool pressed = CheckInput();
+
+    if (pressed)
+    {
+        pressTimer += Time.deltaTime;
+
+        // LONG PRESS spottet
+        if (!longPressTriggered &&
+            pressTimer >= longPressTime)
+        {
+            longPressTriggered = true;
+
+            ToggleAutoMode();
+        }
+    }
+
+    if (!pressed && lClick)
+    {
+        // LEFT CLICK (tap) = NEXT DIALOGUE
+
+        if (!longPressTriggered)
+        {
+            // Manual input disables auto mode
+            autoMode = false;
+
+            if (!blockInput && nextAction != null)
+            {
+                nextAction();
+            }
+        }
+
+        // reset gesture
+        pressTimer = 0f;
+        longPressTriggered = false;
+    }
+
+    lClick = pressed;
+}
+// Method for AutoMode toggle on
+void ToggleAutoMode()
+{
+    autoMode = !autoMode;
+
+    Debug.Log("Auto Mode: " + autoMode);
+
+    if (autoMode &&
+        !blockInput &&
+        nextAction != null)
+    {
+        if (autoCoroutine != null)
+        {
+            StopCoroutine(autoCoroutine);
+        }
+
+        autoCoroutine = StartCoroutine(AutoNext());
+    }
+}
+// Logic behind Auto Play function 
+
+IEnumerator AutoNext()
+{
+    string line = data[currentMessage][Col_Text];
+
+    float delay = 1.5f + (line.Length * 0.04f);
+
+    yield return new WaitForSeconds(delay);
+
+    if (!blockInput &&
+        autoMode &&
+        nextAction != null)
+    {
+        nextAction();
+    }
+}
 
     void showMessage(int message) {
         //if (blockInput) return;
@@ -141,6 +232,17 @@ public class DialogueManager : MonoBehaviour
         string command = data[currentMessage][Col_Functions].ToLower();
         if (actionMap.TryGetValue(command, out nextAction));
         else nextAction = GoNext;
+
+        // NEW: AUTO MODE TRIGGER AFTER TEXT FINISHES
+        if (autoMode)
+        {
+        if (autoCoroutine != null)
+        {
+            StopCoroutine(autoCoroutine);
+        }
+
+        autoCoroutine = StartCoroutine(AutoNext());
+        }
     }
 
     private bool CheckInput()
