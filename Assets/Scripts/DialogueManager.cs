@@ -41,15 +41,14 @@ public class DialogueManager : MonoBehaviour
     // New Auto play mode
     [Header("Auto Play")]
     [SerializeField] private bool autoMode = false;
-    [SerializeField] private float autoDelay = 2.5;
+    [SerializeField] private float autoDelay = 2.5f;
     private Coroutine autoCoroutine;
 
     // Long press on-screen-gesture for autoPlay
     private float pressTimer = 0f;
-    private bool longPressedTriggered = false;
+    private bool longPressTriggered = false;
 
-    [SerializeField] private float LongPressTime = 0.5;
-
+    [SerializeField] private float longPressTime = 0.5f;
 
     //DirectoryInfo backgroundPath = new("/Assets/Images/Backgrounds/");
     //DirectoryInfo characterPath = new("/Assets/Images/Backgrounds/");
@@ -100,7 +99,7 @@ public class DialogueManager : MonoBehaviour
     {
         pressTimer += Time.deltaTime;
 
-        // LONG PRESS spottet
+        // Long press spotted
         if (!longPressTriggered &&
             pressTimer >= longPressTime)
         {
@@ -230,8 +229,14 @@ IEnumerator AutoNext()
     void DoneWriting()
     {
         string command = data[currentMessage][Col_Functions].ToLower();
-        if (actionMap.TryGetValue(command, out nextAction));
-        else nextAction = GoNext;
+        if (actionMap.TryGetValue(command, out nextAction))
+        {
+            
+        }
+        else
+        {
+            nextAction = GoNext;
+        }
 
         // NEW: AUTO MODE TRIGGER AFTER TEXT FINISHES
         if (autoMode)
