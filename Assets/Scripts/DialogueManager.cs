@@ -38,13 +38,13 @@ public class DialogueManager : MonoBehaviour
     readonly int Col_Background = 4;
     readonly int Col_Functions = 5;
 
-    // New Auto play mode
+    // Auto play mode
     [Header("Auto Play")]
     [SerializeField] private bool autoMode = false;
     [SerializeField] private float autoDelay = 2.5f;
     private Coroutine autoCoroutine;
 
-    // Long press on-screen-gesture for autoPlay
+    // Long press on-screen-gesture for AutoPlay
     private float pressTimer = 0f;
     private bool longPressTriggered = false;
 
@@ -79,10 +79,11 @@ public class DialogueManager : MonoBehaviour
     }
 
     bool lClick;
+
     // Update is called once per frame
     void Update()
 {
-    // NEW: KEYBOARD INPUT, Q toggles auto mode
+    // Keyboard input = Q toggles auto mode
 
     if (Keyboard.current != null &&
         Keyboard.current.qKey.wasPressedThisFrame)
@@ -90,7 +91,7 @@ public class DialogueManager : MonoBehaviour
         ToggleAutoMode();
     }
 
-    // NEW: POINTER INPUT (mouse + touch)
+    // Pointer input (mouse + touch)
     // Left click = next dialogue, Long press = toggle auto mode
 
     bool pressed = CheckInput();
@@ -99,7 +100,7 @@ public class DialogueManager : MonoBehaviour
     {
         pressTimer += Time.deltaTime;
 
-        // Long press spotted
+        // Long press trigger
         if (!longPressTriggered &&
             pressTimer >= longPressTime)
         {
@@ -111,7 +112,7 @@ public class DialogueManager : MonoBehaviour
 
     if (!pressed && lClick)
     {
-        // LEFT CLICK (tap) = NEXT DIALOGUE
+        // Left click = Next dialouge
 
         if (!longPressTriggered)
         {
@@ -131,6 +132,7 @@ public class DialogueManager : MonoBehaviour
 
     lClick = pressed;
 }
+
 // Method for AutoMode toggle on
 void ToggleAutoMode()
 {
@@ -238,7 +240,7 @@ IEnumerator AutoNext()
             nextAction = GoNext;
         }
 
-        // NEW: AUTO MODE TRIGGER AFTER TEXT FINISHES
+        // Auto mode is triggered after text finishes
         if (autoMode)
         {
         if (autoCoroutine != null)
