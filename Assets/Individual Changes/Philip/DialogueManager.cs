@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
-public class DialogueManager : MonoBehaviour
+public class DialogueManager2 : MonoBehaviour
 {
     public TextAsset CSV;
     private List<string[]> data = new();
@@ -37,6 +37,18 @@ public class DialogueManager : MonoBehaviour
     readonly int Col_DisplayCharacters = 3;
     readonly int Col_Background = 4;
     readonly int Col_Functions = 5;
+
+    // Auto play mode
+    [Header("Auto Play")]
+    [SerializeField] private bool autoMode = false;
+    [SerializeField] private float autoDelay = 2.5f;
+    private Coroutine autoCoroutine;
+
+    // Long press on-screen-gesture for AutoPlay
+    private float pressTimer = 0f;
+    private bool longPressTriggered = false;
+
+    [SerializeField] private float longPressTime = 0.5f;
 
     //DirectoryInfo backgroundPath = new("/Assets/Images/Backgrounds/");
     //DirectoryInfo characterPath = new("/Assets/Images/Backgrounds/");
@@ -67,16 +79,96 @@ public class DialogueManager : MonoBehaviour
     }
 
     bool lClick;
+
     // Update is called once per frame
     void Update()
+{
+    // Keyboard input = Q toggles auto mode
+
+    if (Keyboard.current != null &&
+        Keyboard.current.qKey.wasPressedThisFrame)
     {
-        //print(!typing + ":"+ currentMessage);
-        //print(typing);
-        //if (!typing) showMessage(currentMessage + 1);
-        bool click = CheckInput();
-        if(!blockInput && !lClick && click && nextAction != null) nextAction();
-        lClick = click;
+        ToggleAutoMode();
     }
+
+    // Pointer input (mouse + touch)
+    // Left click = next dialogue, Long press = toggle auto mode
+
+    bool pressed = CheckInput();
+
+    if (pressed)
+    {
+        pressTimer += Time.deltaTime;
+
+        // Long press trigger
+        if (!longPressTriggered &&
+            pressTimer >= longPressTime)
+        {
+            longPressTriggered = true;
+
+            ToggleAutoMode();
+        }
+    }
+
+    if (!pressed && lClick)
+    {
+        // Left click = Next dialouge
+
+        if (!longPressTriggered)
+        {
+            // Manual input disables auto mode
+            autoMode = false;
+
+            if (!blockInput && nextAction != null)
+            {
+                nextAction();
+            }
+        }
+
+        // reset gesture
+        pressTimer = 0f;
+        longPressTriggered = false;
+    }
+
+    lClick = pressed;
+}
+
+// Method for AutoMode toggle on
+void ToggleAutoMode()
+{
+    autoMode = !autoMode;
+
+    Debug.Log("Auto Mode: " + autoMode);
+
+    if (autoMode &&
+        !blockInput &&
+        nextAction != null)
+    {
+        if (autoCoroutine != null)
+        {
+            StopCoroutine(autoCoroutine);
+        }
+
+        autoCoroutine = StartCoroutine(AutoNext());
+    }
+}
+// Logic behind Auto Play function 
+
+IEnumerator AutoNext()
+{
+    string line = data[currentMessage][Col_Text];
+
+    float delay = 1.5f + (line.Length * 0.04f);
+
+    yield return new WaitForSeconds(delay);
+
+    if (!blockInput &&
+        autoMode &&
+        nextAction != null)
+    {
+        nextAction();
+    }
+}
 
     void showMessage(int message) {
         //if (blockInput) return;
@@ -139,8 +231,25 @@ public class DialogueManager : MonoBehaviour
     void DoneWriting()
     {
         string command = data[currentMessage][Col_Functions].ToLower();
-        if (actionMap.TryGetValue(command, out nextAction));
-        else nextAction = GoNext;
+        if (actionMap.TryGetValue(command, out nextAction))
+        {
+            
+        }
+        else
+        {
+            nextAction = GoNext;
+        }
+
+        // Auto mode is triggered after text finishes
+        if (autoMode)
+        {
+        if (autoCoroutine != null)
+        {
+            StopCoroutine(autoCoroutine);
+        }
+
+        autoCoroutine = StartCoroutine(AutoNext());
+        }
     }
 
     private bool CheckInput()
@@ -209,9 +318,4 @@ public class DialogueManager : MonoBehaviour
         if(ending == "happy_ending") Permanence.EndingID = 2;
         SceneManager.LoadScene("Ending");
     }
-}
-//If copied delete this from the copy
-public static class Permanence
-{
-    public static int EndingID;
 }

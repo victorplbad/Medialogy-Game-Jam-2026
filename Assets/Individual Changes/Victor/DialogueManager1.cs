@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
-public class DialogueManager : MonoBehaviour
+public class DialogueManager1 : MonoBehaviour
 {
     public TextAsset CSV;
     private List<string[]> data = new();
@@ -61,6 +61,7 @@ public class DialogueManager : MonoBehaviour
 
         actionMap.Add("jump", GoJump);
         actionMap.Add("fork", ForkInRoade);
+        actionMap.Add("skip", SkipOver);
         actionMap.Add("end", End);
 
         showMessage(1);
@@ -194,6 +195,33 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    void SkipOver()
+    {
+        blockInput = true;
+        for (int i = buttonPanel.childCount - 1; i >= 0; i--)
+        {
+            Destroy(buttonPanel.GetChild(i).gameObject);
+        }
+
+        buttonPanel.gameObject.SetActive(true);
+        string[] row = data[currentMessage];
+        int col = Col_Functions + 1;
+        while (col + 1 <= row.Length && row[col].Length > 0 && row[col + 1].Length > 0)
+        {
+            GameObject GO = Instantiate(prefab, buttonPanel);
+
+            Button button = GO.GetComponent<Button>();
+            TextMeshProUGUI tmPro = GO.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+
+            tmPro.text = row[col];
+            int veryVeryLocalNumberForAReason = col + 1;
+            button.onClick.AddListener(() => { ButtonListener(row[veryVeryLocalNumberForAReason]); });
+
+            col += 2;
+
+        }
+    }
+
     public void ButtonListener(string a)
     {
         blockInput = false;
@@ -207,11 +235,7 @@ public class DialogueManager : MonoBehaviour
 
         if(ending == "bad_ending") Permanence.EndingID = 1;
         if(ending == "happy_ending") Permanence.EndingID = 2;
-        SceneManager.LoadScene("Ending");
+        SceneManager.LoadScene("Ending1");
     }
 }
-//If copied delete this from the copy
-public static class Permanence
-{
-    public static int EndingID;
-}
+
