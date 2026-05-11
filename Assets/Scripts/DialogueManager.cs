@@ -210,7 +210,7 @@ public class DialogueManager : MonoBehaviour
         SceneManager.LoadScene("Ending");
     }
 }
-
+//If copied delete this from the copy
 public static class Permanence
 {
     public static int EndingID;
