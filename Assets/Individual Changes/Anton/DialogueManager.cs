@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
-public class DialogueManager : MonoBehaviour
+public class DialogueManagerAnton : MonoBehaviour
 {
     public TextAsset CSV;
     private List<string[]> data = new();
@@ -211,7 +211,4 @@ public class DialogueManager : MonoBehaviour
     }
 }
 //If copied delete this from the copy
-public static class Permanence
-{
-    public static int EndingID;
-}
+//Permanence methos was here!
