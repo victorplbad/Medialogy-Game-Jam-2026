@@ -134,6 +134,7 @@ public class CDialogueManager : MonoBehaviour
         string command = data[currentMessage][Col_Functions].ToLower();
         if (actionMap.TryGetValue(command, out nextAction)) ;
         else nextAction = GoNext;
+        //if (!actionMap.TryGetValue(command, out nextAction)) nextAction = GoNext;
     }
 
     void GoNext()           //Default
