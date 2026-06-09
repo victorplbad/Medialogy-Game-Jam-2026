@@ -76,7 +76,7 @@ public class DialogueManagerAnton : MonoBehaviour
         actionMap.Add("fork", ForkInRoade);
         actionMap.Add("end", End);
 
-        // AudioClip Music = MusicSounds[0];
+        // start music
         MusicAudioSource.Play();
         
 
@@ -181,16 +181,17 @@ public class DialogueManagerAnton : MonoBehaviour
         blockInput = true;
 
         textHolder.text = input;
-        textHolder.maxVisibleCharacters = 0;
+        textHolder.maxVisibleCharacters = 0; //written text is invisible
 
-        textHolder.ForceMeshUpdate();
+        textHolder.ForceMeshUpdate(); //text holder is updated
 
         int totalVisibleCharacters = textHolder.textInfo.characterCount;
 
         for (int i = 0; i <= totalVisibleCharacters; i++)
         {
-            textHolder.maxVisibleCharacters = i;
+            textHolder.maxVisibleCharacters = i; //as the loop iterates, the visible text increases, faking a typewriter effect and eliminating text-jumping
 
+            //the following is all about text sounds
             // Safe character access
             if (i < input.Length)
             {
