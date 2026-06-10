@@ -13,26 +13,25 @@ public class CDialogueManager : MonoBehaviour
     private readonly List<string[]> data = new();
 
     private int currentMessage = 0;
+    bool blockInput = false;
 
+    public float letterDelay = 0.015f;
+    private float _letterDelay;
+
+    [Header("GameObject References")]
     public TextMeshProUGUI textName;
     public TextMeshProUGUI textBox;
     public Image background;
     public CharacterSlide characterLeft;
     public CharacterSlide characterRight;
-
     public Transform buttonPanel;
     public GameObject prefab;
 
-    public float letterDelay = 0.015f;
-    float _letterDelay;
-
     private readonly Dictionary<string, Action> actionMap = new();
+    Action nextAction = null;
     //Dictionary<string, Image> backgrounds = new();
     //Dictionary<string, Image> character = new();
     public Sprite[] backgroundImages;
-
-    bool blockInput = false;
-    Action nextAction = null;
 
     readonly int Col_Name = 1;
     readonly int Col_Text = 2;
@@ -43,8 +42,6 @@ public class CDialogueManager : MonoBehaviour
     //DirectoryInfo backgroundPath = new("/Assets/Images/Backgrounds/");
     //DirectoryInfo characterPath = new("/Assets/Images/Backgrounds/");
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         string[] rows = CSV.text.Split('\n');
@@ -184,7 +181,7 @@ public class CDialogueManager : MonoBehaviour
     }
 
     Dictionary<string, bool> flags = new();
-    public void SetFlag()
+    public void SetFlag()   //FSet
     {
         string key = data[currentMessage][Col_Functions + 1];
         print("fset: " + key);
@@ -192,7 +189,7 @@ public class CDialogueManager : MonoBehaviour
         GoNext();
     }
 
-    public void CheckFlag()
+    public void CheckFlag() //FCheck
     {
         string key = data[currentMessage][Col_Functions + 1];
         flags.TryGetValue(key, out bool flag);
