@@ -1260,7 +1260,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cafd2b1bae8603743991bd4afc42e7c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CDialogueManager
-  CSV: {fileID: 4900000, guid: a4b9b1c55e53b5a4d9031b112d5d074b, type: 3}
+  CSV: {fileID: 4900000, guid: 3724ba70339ff624b863ffe04b7670cd, type: 3}
   textName: {fileID: 1751150572}
   textBox: {fileID: 1581469044}
   background: {fileID: 1117689032}

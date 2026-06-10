@@ -58,7 +58,7 @@ public class DialogueManager : MonoBehaviour
             //print(fields.ToString());
             data.Add(fields);
         }
-
+        
         actionMap.Add("jump", GoJump);
         actionMap.Add("fork", ForkInRoade);
         actionMap.Add("end", End);
@@ -94,7 +94,7 @@ public class DialogueManager : MonoBehaviour
     }
 
     void SetCharacterImages(string input)
-    {
+    {// [LeftID:RightID]
         if (input == null) return;
         if (input.Length == 0)
         {
@@ -164,19 +164,19 @@ public class DialogueManager : MonoBehaviour
     }
 
     void GoJump()
-    {
+    {// jump
         showMessage(int.Parse(data[currentMessage][Col_Functions + 1]));
     }
 
     void ForkInRoade()
-    {
+    {// fork
         blockInput = true;
         for (int i = buttonPanel.childCount - 1; i >= 0; i--)
         {
             Destroy(buttonPanel.GetChild(i).gameObject);
         }
-
         buttonPanel.gameObject.SetActive(true);
+
         string[] row = data[currentMessage];
         int col = Col_Functions + 1;
         while (col + 1 <= row.Length && row[col].Length > 0 && row[col + 1].Length > 0)
@@ -202,7 +202,7 @@ public class DialogueManager : MonoBehaviour
     }
 
     void End()
-    {
+    {// end
         var ending = data[currentMessage][Col_Functions + 1].Trim().ToLower();
 
         if(ending == "bad_ending") Permanence.EndingID = 1;

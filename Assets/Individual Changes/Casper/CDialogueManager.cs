@@ -64,6 +64,8 @@ public class CDialogueManager : MonoBehaviour
         actionMap.Add("jump", GoJump);
         actionMap.Add("fork", ForkInRoade);
         actionMap.Add("end", End);
+        actionMap.Add("fset", SetFlag);
+        actionMap.Add("fcheck", CheckFlag);
 
         ShowMessage(1);
 
@@ -78,7 +80,6 @@ public class CDialogueManager : MonoBehaviour
 
     void ShowMessage(int message)
     {
-        //if (blockInput) return;
         if (currentMessage == message) return;
         currentMessage = message;
 
@@ -131,10 +132,10 @@ public class CDialogueManager : MonoBehaviour
 
     void DoneWriting()
     {
-        string command = data[currentMessage][Col_Functions].ToLower();
-        if (actionMap.TryGetValue(command, out nextAction)) ;
-        else nextAction = GoNext;
-        //if (!actionMap.TryGetValue(command, out nextAction)) nextAction = GoNext;
+        string command = data[currentMessage][Col_Functions].Trim().ToLower();
+        //if (actionMap.TryGetValue(command, out nextAction)) ;
+        //else nextAction = GoNext;
+        if (!actionMap.TryGetValue(command, out nextAction)) nextAction = GoNext;
     }
 
     void GoNext()           //Default
@@ -180,6 +181,26 @@ public class CDialogueManager : MonoBehaviour
         if (ending == "bad_ending") Permanence.EndingID = 1;
         if (ending == "happy_ending") Permanence.EndingID = 2;
         SceneManager.LoadScene("Ending");
+    }
+
+    Dictionary<string, bool> flags = new();
+    public void SetFlag()
+    {
+        string key = data[currentMessage][Col_Functions + 1];
+        print("fset: " + key);
+        flags.Add(key, true);
+        GoNext();
+    }
+
+    public void CheckFlag()
+    {
+        string key = data[currentMessage][Col_Functions + 1];
+        flags.TryGetValue(key, out bool flag);
+
+        print("fcheck: " + key + " : " + flag);
+
+        if (flag) ShowMessage(int.Parse(data[currentMessage][Col_Functions + 2]));
+        else GoNext();
     }
 
     public void ButtonListener(string a)
